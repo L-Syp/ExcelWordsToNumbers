@@ -3,6 +3,7 @@ using System.Windows;
 using Microsoft.Win32;
 using Numbers_To_Words;
 using LanguageModelFilter;
+using System;
 
 namespace GUI
 {
@@ -20,14 +21,22 @@ namespace GUI
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            dict = ProcessExcel.ReadCellFromTxt();
-            if (openFileDialog.ShowDialog() == true)
+            try
             {
-                file_txtbox.Text = openFileDialog.FileName;
+                dict = ProcessExcel.ReadCellFromTxt();
+                if (openFileDialog.ShowDialog() == true)
+                    file_txtbox.Text = openFileDialog.FileName;
+           
+                currentValue_txtbox.Text = ProcessExcel.ReadCellValue(openFileDialog.FileName, dict["Row"], dict["Column"]);
+                valueToSave_txtbox.Text = NumbersToText.ConvertAmountInPLN(ProcessExcel.ReadCellValue(openFileDialog.FileName, dict["Row"], dict["Column"]));
                 save_btn.IsEnabled = true;
             }
-            currentValue_txtbox.Text = ProcessExcel.ReadCellValue(openFileDialog.FileName, dict["Row"], dict["Column"]);
-            valueToSave_txtbox.Text = NumbersToText.ConvertAmountInPLN(ProcessExcel.ReadCellValue(openFileDialog.FileName, dict["Row"], dict["Column"]));
+            catch (Exception ex)
+            {
+                currentValue_txtbox.Text = "Błąd! " + ex.Message;
+                valueToSave_txtbox.Text = "Błąd! " + ex.Message;
+                save_btn.IsEnabled = false;
+            }
         }
 
         private void save_btn_Click(object sender, RoutedEventArgs e)

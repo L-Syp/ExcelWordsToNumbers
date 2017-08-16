@@ -39,9 +39,6 @@
     <ApplicationIcon>Graphicloads-Filetype-Excel-xls.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Numbers To Words">
-      <HintPath>..\Numbers To Words\bin\Release\Numbers To Words.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -113,6 +110,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Graphicloads-Filetype-Excel-xls.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Numbers To Words\Numbers To Words.csproj">
+      <Project>{b178ee71-7b64-464b-bb8c-b0dcb8da27b5}</Project>
+      <Name>Numbers To Words</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

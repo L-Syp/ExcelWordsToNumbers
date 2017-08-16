@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Office.Interop.Excel;
+using System.Text.RegularExpressions;
 
 
 namespace Numbers_To_Words
@@ -18,11 +19,14 @@ namespace Numbers_To_Words
                 Application excel = new Application();
                 wb = excel.Workbooks.Open(filePath);
                 Worksheet excelSheet = wb.ActiveSheet;
-                return excelSheet.Cells[rowNo, columnNo].Value.ToString(); //[Row, Column]
-            }
-            catch (Exception e)
-            {
-                return "Error! Coś poszło nie tak. Sprawdź czy komórka nie jest pusta i czy zamknięto Excela";
+                string value = excelSheet.Cells[rowNo, columnNo].Value.ToString(); //[Row, Column]
+                string regex = @"\d+,\d+";
+                Regex r = new Regex(regex, RegexOptions.IgnoreCase);
+                Match m = r.Match(value);
+                if (m.Captures.Count != 0)
+                    return m.Groups[0].Value;
+                else
+                    throw new Exception("Nieprawidłowa wartość w komórce.");       
             }
             finally
             {
@@ -40,7 +44,6 @@ namespace Numbers_To_Words
                 if (worksheet == null)
                     return;
 
-                //var abc = worksheet.Cells[2, 1].Value;
                 Range cell = worksheet.Cells[row, column];
 
                 cell.Value = amount;
